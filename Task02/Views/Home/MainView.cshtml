@@ -1,0 +1,146 @@
+﻿@using Task02.Models
+@model IEnumerable<User>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MainView</title>
+    @Styles.Render("~/Content/css")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+        
+        
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function OnChangeText() {
+                var elem = document.getElementById('Text');
+                var request = new XMLHttpRequest();
+                var body = 'text=' + elem.value;
+                request.open('POST', '/Home/Notes');
+                request.send(body);
+            }
+        })
+        $("#Text").on('change', OnChangeText);
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+</head>
+<body>
+    <style>
+        body {
+            background: #EEE8AA;
+            color: #000000;
+        }
+    </style>
+    <script>
+
+        function SetCheckbox() {
+            var CheckBox = document.getElementsByName("MyCheckbox");
+            for (var index = 0; index < CheckBox.length; index++) {
+                if (CheckBox[0].checked) {
+                    CheckBox[index].checked = true;
+                }
+                else {
+                    CheckBox[index].checked = false;
+                }
+            }
+        }
+        function DND() {
+            var notes = document.getElementById("Notes");
+            notes.onmousedown = function (e) {
+                var Coords = getCoords(notes);
+                var shiftX = e.pageX - Coords.left;
+                var shiftY = e.pageY - Coords.top;
+
+                notes.style.position = 'absolute';
+                document.body.appendChild(notes);
+
+                notes.style.left = e.pageX - shiftX + 'px';
+                notes.style.top = e.pageY - shiftY + 'px';
+
+                document.onmousemove = function (e) {
+                    notes.style.left = e.pageX - shiftX + 'px';
+                    notes.style.top = e.pageY - shiftY + 'px';
+                };
+                notes.onmouseup = function () {
+                    document.onmousemove = null;
+                    notes.onmouseup = null;
+                    notes.onmousedown = null;
+                };
+                notes.ondragstart = function () {
+                    return false;
+                };
+                function getCoords(elem) {
+                    var box = elem.getBoundingClientRect();
+                    return {
+                        top: box.top + pageYOffset,
+                        left: box.left + pageXOffset
+                    };
+                }
+            }
+
+        }
+
+
+    </script>
+    <form method="get" action="~/Home/MainView">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-1">
+
+                <input type="submit" class="btn btn-default" name="chaction" value="Lock" />
+                <input type="submit" class="btn btn-default" name="chaction" value="Unlock" />
+                <input type="submit" class="btn btn-default" name="chaction" value="Delete" />
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-1">
+                <table border="1" width="500" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <input id="MyCheckbox" name="MyCheckbox" type="checkbox" value="true" onclick="SetCheckbox()" />
+                                <input name="MyCheckbox" type="hidden" value="false" />
+                            </th>
+                            <th scope="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Mail</th>
+                            <th scope="col">DateReg</th>
+                            <th scope="col">LastLogin</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Task02.Models.User item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@Html.CheckBox("MyCheckbox", false)</th>
+                                <th id="CurrentId" name="CurrentId">@item.Id</th>
+                                <th>@item.Name</th>
+                                <th>@item.Mail</th>
+                                <th>@item.DateReg</th>
+                                <th>@item.LastLogin</th>
+                                <th>@item.Status</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <script>
+        function ChangeColor(color) {
+            var elem = document.getElementById("Notes");
+            elem.style.backgroundColor = color;
+        }
+    </script>
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

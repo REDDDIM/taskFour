@@ -1,0 +1,45 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Reg</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <style>
+        body {
+            background: #EEE8AA;
+            color: #000000;
+        }
+    </style>
+    <form method="post" action="~/Home/Reg">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <h1 style="text-align:center">REGISTRATION</h1>
+                <p>Name:</p>
+                <input type="text" name="Name" />
+                <br />
+                <br />
+                <p>E-mail:</p>
+                <input type="email" name="Mail" />
+                <br />
+                <br />
+                <p>Password:</p>
+                <input type="password" name="Password" />
+                <br />
+                <br />
+                <div>
+                    <input type="submit" value="Registration" />
+                </div>
+            </div>
+        </div>
+    </form>
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>
